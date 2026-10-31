@@ -1,5 +1,6 @@
 id = "appleskin"
 kind = "native-mod"
+repo = "soufied/AppleSkin-Horizon"
 name = "AppleSkin"
 summary = "Shows how much HP, hunger, and saturation will be restored."
 description = """
