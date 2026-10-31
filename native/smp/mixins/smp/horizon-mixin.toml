@@ -1,12 +1,12 @@
 [mod]
 id = "smp"
-version = "0.5.0"
+version = "0.7.0"
 priority = 100
 
-# The commit of horizon main it was tested on. It uses only the native hook points (hooks 10 in
+# The commit of horizon main it was tested on. It uses only the native hook points (hooks 21 in
 # compatibility.json): it builds on any Horizon that has them.
 [compatibility]
-horizon_revision = "f533c3af7d41d7ecc3b015a9fbb0dbf5eb64ae26"
+horizon_revision = "b5b451de7c9d8d3dfc851c9405d4754724205e1b"
 
 [[module]]
 id = "store"
@@ -43,6 +43,18 @@ id = "lottery"
 file = "crates/horizon-client/src/game.rs"
 name = "smp_lottery"
 source = "smp_lottery.rs"
+
+[[module]]
+id = "places"
+file = "crates/horizon-client/src/game.rs"
+name = "smp_places"
+source = "smp_places.rs"
+
+[[module]]
+id = "claims"
+file = "crates/horizon-client/src/game.rs"
+name = "smp_claims"
+source = "smp_claims.rs"
 
 [[module]]
 id = "glue"
@@ -112,4 +124,26 @@ bindings = [
   { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
   { name = "uuid", ty = "u128", value = "uuid" },
   { name = "window", ty = "i32", value = "window" },
+]
+
+[[injection]]
+id = "destroy_block"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_destroy_block"
+helper = "destroy_block.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "pos", ty = "[i32; 3]", value = "pos" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
+]
+
+[[injection]]
+id = "right_click_block"
+kind = "HEAD"
+target = "horizon_client::game::native_hooks::Game<'_>::native_right_click_block"
+helper = "right_click_block.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "pos", ty = "[i32; 3]", value = "pos" },
+  { name = "canceled", ty = "&mut bool", value = "&mut *canceled" },
 ]
